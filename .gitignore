@@ -1,5 +1,8 @@
+vgcore.*
+
 # Prerequisites
 *.d
+
 
 # Object files
 *.o

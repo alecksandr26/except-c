@@ -22,7 +22,10 @@ C_DEBUG_FLAGS = -ggdb -pedantic -Wall
 C_COMPILE_FLAGS = -O3 -DNDEBUG -fno-stack-protector -z execstack -no-pie
 C_FLAGS = $(C_DEBUG_FLAGS)
 N = nasm
-N_FLAGS = -f elf64
+N_DEBUG_FLAGS = -g -f elf64
+N_COMPILE_FLAGS = -f elf64
+N_FLAGS = $(N_DEBUG_FLAGS)
+
 AR = ar rc
 CF = clang-format -i
 
@@ -46,7 +49,7 @@ OBJS = $(addprefix $(OBJ_DIR)/, except.o setjmp.o)
 LIB = $(addprefix $(LIB_DIR)/, libexcept.a)
 
 # The tests
-TESTS = $(addprefix $(TEST_BIN_DIR)/, 	)
+TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_setjmp.out test_except.out)
 
 
 # Compile everything
