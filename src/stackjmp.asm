@@ -1,5 +1,5 @@
-	;; @file state.asm
-	;; @brief My own implementations of setjmp and longjmp.
+	;; @file stackjmp.asm
+	;; @brief My own implementations of stackjmp and jmpback.
 	;; @author Erick Carrillo.
 	;; @copyright Copyright (C) 2023, Erick Alejandro Carrillo López, All right reserved.b
 	;; @license This project is released under the MIT License
@@ -9,13 +9,13 @@
 	section .bss
 	
 	section .text
-	global setjmp
-	global longjmp
+	global stackjmp
+	global jmpback
 
-	;; int setjmp(JmpBuf *buf)
+	;; int stackjmp(JmpBuf *buf)
 	;; rdi -> buf -> is the address for the buffer
 	;; Initialize a state jump point for a future jumping.
-setjmp:
+stackjmp:
 	;; this function is not a normal c function 
 	mov rax, rdi	; catch the address of the buffer
 
@@ -38,18 +38,18 @@ setjmp:
 	ret
 
 
-	;; void longjmp(JmpBuf *buf, int val)
+	;; void jmpback(JmpBuf *buf, int val)
 	;; rdi -> buf -> it is the address for the initialized buffer
 	;; rsi -> val -> It is the value to return
-longjmp:
+jmpback:
 	mov rdx, rdi
 	mov rax, rsi
 
 	cmp rax, 0		; is int val == 0
-	jne longjmp_continue
+	jne jmpback_continue
 	inc rax			; Increment 1 
 	
-longjmp_continue:
+jmpback_continue:
 	mov rbx, qword [rdx]		; rbx = buf[0] 
 	mov rsi, qword [rdx + 8]	; rsi = buf[1] 
 	mov rdi, qword [rdx + 16]	; rdi = buf[2]

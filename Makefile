@@ -43,15 +43,15 @@ TEST_SRC_DIR = $(addprefix $(TEST_DIR)/, src)
 TEST_BIN_DIR = $(addprefix $(TEST_DIR)/, bin)
 
 # The dependencies
-OBJS = $(addprefix $(OBJ_DIR)/, except.o setjmp.o)
+OBJS = $(addprefix $(OBJ_DIR)/, except.o stackjmp.o)
 
 # The complete library
 LIB = $(addprefix $(LIB_DIR)/, libexcept.a)
 
-INTERFACCES= $(addprefix $(INCLUDE_DIR)/, except.h setjmp.h)
+INTERFACES = $(addprefix $(INCLUDE_DIR)/, except.h stackjmp.h)
 
 # The tests
-TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_setjmp.out test_except.out)
+TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_stackjmp.out test_except.out)
 
 
 # Compile everything
@@ -74,23 +74,23 @@ $(TEST_BIN_DIR):
 	@mkdir -p $@
 
 # Compile all the dependencies
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/%.h
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INTERFACES)
 	@echo Compiling: $< -o $@
 	@$(C) $(C_FLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm $(INTERFACES)
 	@echo Compiling: $< -o $@
 	@$(N) $(N_FLAGS) $< -o $@
 
 # Archive the whole dependecies
-$(LIB): $(OBJS)
-	@echo Archiving: $^ -o $@
-	@$(AR) $@ $^
+$(LIB): $(OBJS) $(INTERFACES)
+	@echo Archiving: $(OBJS) -o $@
+	@$(AR) $@ $(OBJS)
 	@ranlib $@
 
-$(TEST_BIN_DIR)/test_%.out: $(TEST_SRC_DIR)/test_%.c $(LIB)
-	@echo Compiling: $^ -o $@
-	@$(C) $(C_FLAGS) $^ -o $@
+$(TEST_BIN_DIR)/test_%.out: $(TEST_SRC_DIR)/test_%.c $(LIB) $(INTERFACES)
+	@echo Compiling: $(word 1, $^) $(word 2, $^) -o $@
+	@$(C) $(C_FLAGS) $(word 1, $^) $(word 2, $^) -o $@
 
 # To run an specifyc test
 test_%.out: $(TEST_BIN_DIR)/test_%.out
@@ -150,11 +150,10 @@ $(INSTALL_INCLUDE_DIR)/%.h: $(INCLUDE_DIR)/%.h
 	sudo install $< $@
 
 # Install the library
-install: compile $(addprefix $(INSTALL_INCLUDE_DIR)/, $(wildcard $(INCLUDE_DIR)/*.h))
+install: compile $(addprefix $(INSTALL_INCLUDE_DIR)/, $(notdir $(INTERFACES)))
 	@echo Installing: $(LIB) -o $(INSTALL_LIB_DIR)/$(notdir $(LIB))
 	sudo install $(LIB) $(INSTALL_LIB_DIR)/$(notdir $(LIB))
 	@echo Installed:
-
 
 format_$(SRC_DIR)/%.c:
 	@echo Formatting: $(patsubst format_%, %, $@)
