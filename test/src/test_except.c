@@ -84,8 +84,6 @@ void test_multiples_trys(void)
 	assert(i == 2);
 }
 
-
-
 void more_try(void)
 {
 	void *instance = NULL;
