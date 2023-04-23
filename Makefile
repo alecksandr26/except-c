@@ -1,8 +1,8 @@
 # @file Makefile
 # @brief The compilation script
 # @author Erick Carrillo.
-# @copyright Copyright (C) 2022, Erick Alejandro Carrillo López, All right reserved.
-# @license This project is released under the Apache License 2.0
+# @copyright Copyright (C) 2023, Erick Alejandro Carrillo López, All right reserved.
+# @license This project is released under the MIT License 
 
 # For debuggin
 .SUFFIXES:
@@ -21,6 +21,8 @@ C = cc
 C_DEBUG_FLAGS = -ggdb -pedantic -Wall
 C_COMPILE_FLAGS = -O3 -DNDEBUG -fno-stack-protector -z execstack -no-pie
 C_FLAGS = $(C_DEBUG_FLAGS)
+N = nasm
+N_FLAGS = -f elf64
 AR = ar rc
 CF = clang-format -i
 
@@ -38,13 +40,15 @@ TEST_SRC_DIR = $(addprefix $(TEST_DIR)/, src)
 TEST_BIN_DIR = $(addprefix $(TEST_DIR)/, bin)
 
 # The dependencies
-OBJS = $(addprefix $(OBJ_DIR)/, except.o)
+OBJS = $(addprefix $(OBJ_DIR)/, except.o setjmp.o)
 
 # The complete library
 LIB = $(addprefix $(LIB_DIR)/, libexcept.a)
 
 # The tests
 TESTS = $(addprefix $(TEST_BIN_DIR)/, 	)
+
+
 # Compile everything
 .PHONY: all clean compile install format format_$(SRC_DIR)/%.c format_$(INCLUDE_DIR)/%.h \
 	format_$(TEST_SRC_DIR)/%.c
@@ -68,6 +72,10 @@ $(TEST_BIN_DIR):
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/%.h
 	@echo Compiling: $< -o $@
 	@$(C) $(C_FLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm
+	@echo Compiling: $< -o $@
+	@$(N) $(N_FLAGS) $< -o $@
 
 # Archive the whole dependecies
 $(LIB): $(OBJS)
