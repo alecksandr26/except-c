@@ -19,7 +19,7 @@ endef
 
 C = cc
 C_DEBUG_FLAGS = -ggdb -pedantic -Wall
-C_COMPILE_FLAGS = -O3 -DNDEBUG -fno-stack-protector -z execstack -no-pie
+C_COMPILE_FLAGS = -O2 -DNDEBUG -fno-stack-protector -z execstack -no-pie
 C_FLAGS = $(C_DEBUG_FLAGS)
 N = nasm
 N_DEBUG_FLAGS = -g -f elf64
@@ -47,6 +47,8 @@ OBJS = $(addprefix $(OBJ_DIR)/, except.o setjmp.o)
 
 # The complete library
 LIB = $(addprefix $(LIB_DIR)/, libexcept.a)
+
+INTERFACCES= $(addprefix $(INCLUDE_DIR)/, except.h setjmp.h)
 
 # The tests
 TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_setjmp.out test_except.out)
@@ -135,6 +137,7 @@ endif
 
 # Clean objects and libs and recompile with optimizations
 compile: C_FLAGS = $(C_COMPILE_FLAGS)
+compile: N_FLAGS = $(N_COMPILE_FLAGS)
 compile: $(OBJ_DIR) $(LIB_DIR) $(TEST_BIN_DIR) \
 	$(addprefix clean_, 	$(wildcard $(OBJ_DIR)/*.o) \
 				$(wildcard $(LIB_DIR)/*.a) \
