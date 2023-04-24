@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <except.h>
 
-Except someError = {"Some error"};
+Except someError = {"Some error"},
+	anotherError = {"Another error"};
 
 int main(void)
 {
