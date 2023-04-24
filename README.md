@@ -7,7 +7,7 @@ This module provides a simple macro interface that allows for easy exception han
 2. Run the command `yay -S c-exceptions` to search for and install the package from the AUR (Arch User Repository).
 
 ## Using `make`
-1. Download the source code for the `c-exceptions` package from [github](https://github.com/alecksandr26/c-exceptions.git)
+1. Download the source code for the `c-exceptions` package from [github](https://github.com/alecksandr26/c-exceptions/releases/tag/v1.0.0)
 2. Extract the contents of the downloaded archive to a directory of your choice.
 3. Open a terminal window and navigate to the directory where you extracted the source code.
 4. Run the command `make compile` to compile the dependencies.
