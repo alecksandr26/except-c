@@ -39,6 +39,12 @@ his code snippet attempts to raise the someError exception using the raise macro
 ```
 cc mycode.c -lexcept
 ```
+## Video example
+
+
+https://user-images.githubusercontent.com/66882463/234101042-da4c25e1-c0e4-4954-9b2b-2a90b700c8ea.mp4
+
+
 
 # References
 1. Mark. (2023). How setjmp and longjmp work. Offlinemark. https://offlinemark.com/2016/02/09/lets-understand-setjmp-longjmp/
