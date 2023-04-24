@@ -10,7 +10,7 @@
 # then please put 'unknown'.
 
 # Maintainer: alecksandr <sansepiol26@gmail.com>
-pkgname=except-in-c-git
+pkgname=c-exceptions-git
 pkgver=1.0.0
 pkgrel=1
 epoch=
