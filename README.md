@@ -35,7 +35,7 @@ try {
 ```
 his code snippet attempts to raise the someError exception using the raise macro. If the exception is raised, the except macro will catch it and execute the code block following it. In this case, the code block simply prints a message to the console.
 
-5. Compile your code with the -lexcept flag to link against the c-exceptions library. For example:
+5. Compile your code with ***the -lexcept flag*** to link against the ***c-exceptions library***. For example:
 ```
 cc mycode.c -lexcept
 ```
