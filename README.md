@@ -24,6 +24,7 @@ This module provides a simple macro interface that allows for easy exception han
 Except someError = {"Some error"};
 ```
 In this example, `someError` is ***an exception*** of type `Except`, with the message "Some error".
+
 4. Use the try, raise, and except macros to handle exceptions in your code. Here is an example code snippet:
 ```c
 try {
@@ -33,6 +34,7 @@ try {
 } endtry;
 ```
 his code snippet attempts to raise the someError exception using the raise macro. If the exception is raised, the except macro will catch it and execute the code block following it. In this case, the code block simply prints a message to the console.
+
 5. Compile your code with the -lexcept flag to link against the c-exceptions library. For example:
 ```
 cc mycode.c -lexcept
