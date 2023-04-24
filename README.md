@@ -14,9 +14,29 @@ This module provides a simple macro interface that allows for easy exception han
 5. Run the command `sudo make install` to install the package system-wide. You may be prompted to enter your ***administrator password***.
 
 # Getting started
-blah blah
-
-
+1. Install the [c-exceptions](https://github.com/alecksandr26/c-exceptions#how-to-install-it-) library on your system.
+2. Include the except.h header file in your C source code file using the following statement:
+```c
+#include <except.h>
+```
+3. Define your exception(s) using the `Except` type, as shown in the following example:
+```c
+Except someError = {"Some error"};
+```
+In this example, `someError` is ***an exception*** of type `Except`, with the message "Some error".
+4. Use the try, raise, and except macros to handle exceptions in your code. Here is an example code snippet:
+```c
+try {
+    raise(someError); // <--- throw the exception of someError
+} except(someError) {
+    puts("Exception caught!");
+} endtry;
+```
+his code snippet attempts to raise the someError exception using the raise macro. If the exception is raised, the except macro will catch it and execute the code block following it. In this case, the code block simply prints a message to the console.
+5. Compile your code with the -lexcept flag to link against the c-exceptions library. For example:
+```
+cc mycode.c -lexcept
+```
 
 # References
 1. Mark. (2023). How setjmp and longjmp work. Offlinemark. https://offlinemark.com/2016/02/09/lets-understand-setjmp-longjmp/
