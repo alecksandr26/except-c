@@ -10,14 +10,14 @@
 # then please put 'unknown'.
 
 # Maintainer: alecksandr <sansepiol26@gmail.com>
-pkgname=c-exceptions-git
+pkgname=c-exceptions
 pkgver=1.0.0
 pkgrel=1
 epoch=
-pkgdesc="It is a module with a simple macro interface, that adds the capability to handle exceptions in C."
+pkgdesc="This module provides a simple macro interface that allows for easy exception handling in C, similar to Python's approach."
 arch=(x86_64)
 url="https://github.com/alecksandr26/c-exceptions"
-license=('MIT License ')
+license=('MIT License')
 depends=()
 makedepends=(gcc git make binutils coreutils)
 optdepends=(valgrind)
@@ -26,7 +26,7 @@ md5sums=('SKIP')
 
 # Compile the source code 
 build () {
-    cd except-in-c/
+    cd $pkgname/
     make compile
 }
 
@@ -36,6 +36,6 @@ package() {
     cd $pkgdir
     mkdir -p usr
     mkdir -p usr/lib
-    cp -r ../../src/except-in-c/lib usr/
-    cp -r ../../src/except-in-c/include usr/
+    cp -r ../../src/$pkgname/lib usr/
+    cp -r ../../src/$pkgname/include usr/
 }
