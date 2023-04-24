@@ -4,8 +4,8 @@
 */
 
 
-#include <except.h>
 #include <stdio.h>
+#include <except.h>
 
 Except someError = {"Some error"};
 
@@ -14,7 +14,7 @@ int main(void)
 	try
 		raise(someError);
 	except(someError)
-		puts("Testing the installed lib");
+		puts("Hello, World!");
 	endtry;
 	
 	return 0;
