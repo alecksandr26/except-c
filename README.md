@@ -4,7 +4,7 @@ This module provides a simple macro interface that allows for easy exception han
 # How to install it ?
 ## Using `yay`
 1. Open a terminal window and ensure that you have yay installed on your system.
-2. Run the command `yay -S c-exceptions` to search for and install the package from the AUR (Arch User Repository).
+2. Run the command `yay -S c-exceptions` to search for and install the package from the [AUR (Arch User Repository)](https://aur.archlinux.org/packages/c-exceptions).
 
 ## Using `make`
 1. Download the source code for the `c-exceptions` package from [releases](https://github.com/alecksandr26/c-exceptions/releases/tag/v1.0.0)
