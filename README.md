@@ -1,5 +1,5 @@
 # C Exceptions
-It is a module with a simple macro interface, that adds the capability to handle exceptions in C.
+This module provides a simple macro interface that allows for easy exception handling in C, similar to Python's approach.
 
 # How to install it ?
 ## Using `yay`
