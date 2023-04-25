@@ -1,8 +1,8 @@
 # Table of Contents
-> * [Description](https://github.com/alecksandr26/c-exceptions#c-exceptions)
-> * [How to install?](https://github.com/alecksandr26/c-exceptions#how-to-install-it-)
-> * [Getting started](https://github.com/alecksandr26/c-exceptions#getting-started)
-> * [References](https://github.com/alecksandr26/c-exceptions#references)
+>> * [Description](https://github.com/alecksandr26/c-exceptions#c-exceptions)
+>> * [How to install?](https://github.com/alecksandr26/c-exceptions#how-to-install-it-)
+>> * [Getting started](https://github.com/alecksandr26/c-exceptions#getting-started)
+>> * [References](https://github.com/alecksandr26/c-exceptions#references)
 
 # C Exceptions
 This module provides a simple macro interface that allows for easy exception handling in C, similar to Python's approach.
