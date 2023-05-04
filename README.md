@@ -34,7 +34,7 @@ In this example, `someError` is ***an exception*** of type `Except`, with the me
 4. Use the try, raise, and except macros to handle exceptions in your code. Here is an example code snippet:
 ```c
 try {
-    raise(someError); // <--- throw the exception of someError
+    throw_except(someError); // <--- throw the exception of someError
 } except(someError) {
     puts("Exception caught!");
 } endtry;
@@ -47,8 +47,7 @@ cc mycode.c -lexcept
 ```
 ## Video example
 
-
-https://user-images.githubusercontent.com/66882463/234101042-da4c25e1-c0e4-4954-9b2b-2a90b700c8ea.mp4
+https://user-images.githubusercontent.com/66882463/236306906-a3222791-bc2c-4011-bf60-5b39bac510fc.mp4
 
 
 
