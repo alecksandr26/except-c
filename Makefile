@@ -29,6 +29,9 @@ N_FLAGS = $(N_DEBUG_FLAGS)
 AR = ar rc
 CF = clang-format -i
 
+V = valgrind
+V_FLAGS = --leak-check=full --track-origins=yes -s  --show-leak-kinds=all
+
 OBJ_DIR = obj
 SRC_DIR = src
 INCLUDE_DIR = include
@@ -95,7 +98,7 @@ $(TEST_BIN_DIR)/test_%.out: $(TEST_SRC_DIR)/test_%.c $(LIB) $(INTERFACES)
 # To run an specifyc test
 test_%.out: $(TEST_BIN_DIR)/test_%.out
 	@echo $@:
-	@valgrind --leak-check=full --track-origins=yes -s  --show-leak-kinds=all ./$<
+	@$(V) $(V_FLAGS) ./$<
 	@echo Passed:
 
 # To Run all the tests

@@ -14,7 +14,7 @@ void test_simple_try_except(void)
 {
 	int i = 0;
 
-	try raise(SomeError); /* raise some error */
+	try throw_except(SomeError); /* throw_except some error */
 	except(SomeError3) i = 5;
 	except(SomeError) i++;
 	except(SomeError2) i = 3;
@@ -30,7 +30,7 @@ Except NotEnoughMemory		= {"Not enough memory"},
 /* always is going to return null */
 void *alloc_will_be_null(int num)
 {
-	if (num < 1) raise(AllocNumShouldBePositive);
+	if (num < 1) throw_except(AllocNumShouldBePositive);
 	return NULL;
 }
 
@@ -40,7 +40,7 @@ void *create_instance_of_something(int n)
 	void *some_instance;
 
 	if ((some_instance = alloc_will_be_null(n)) == NULL)
-		raise(NotEnoughMemory); /* raise the error */
+		throw_except(NotEnoughMemory); /* throw_except the error */
 
 	return some_instance;
 }
@@ -62,11 +62,11 @@ void test_multiples_trys(void)
 {
 	int i = 0;
 
-	try raise(SomeError);
+	try throw_except(SomeError);
 	except(SomeError) i++;
 	endtry;
 
-	try raise(SomeError2);
+	try throw_except(SomeError2);
 	except(SomeError2) i++;
 	endtry;
 
@@ -81,7 +81,7 @@ void more_try(void)
 	except(AllocNumShouldBePositive)
 	{
 		assert(instance == NULL);
-		raise(AllocNumShouldBePositive); /* Raise again an error */
+		throw_except(AllocNumShouldBePositive); /* Raise again an error */
 	}
 	endtry;
 }

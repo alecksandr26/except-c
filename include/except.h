@@ -42,7 +42,7 @@ extern F *except_head;
 /* except_raise: It catches some exception and throw it */
 extern void except_raise(const E *e, const char *file, int line);
 
-#define raise(e) except_raise(&(e), __FILE__, __LINE__)
+#define throw_except(e) except_raise(&(e), __FILE__, __LINE__)
 
 /* To re-throw an exception that weren't be able to handled */
 #define RE_RAISE \
