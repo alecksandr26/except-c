@@ -17,7 +17,7 @@ epoch=
 pkgdesc="This module offers a straightforward macro interface that facilitates seamless exception handling in
  the C programming language, drawing inspiration from the paradigm employed in C++."
 arch=(x86_64)
-url="https://github.com/alecksandr26/tc-c"
+url="https://github.com/alecksandr26/trycatch-c"
 license=('MIT License')
 depends=()
 makedepends=(gcc git make binutils coreutils nasm)
