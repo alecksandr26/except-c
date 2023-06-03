@@ -11,7 +11,7 @@
 
 # Maintainer: alecksandr <sansepiol26@gmail.com>
 pkgname=trycatch-c
-pkgver=1.2.1
+pkgver=1.2.0
 pkgrel=1
 epoch=
 pkgdesc="This module offers a straightforward macro interface that facilitates seamless exception handling in
