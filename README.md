@@ -1,8 +1,10 @@
 # Table of Contents
-* [Description](https://github.com/alecksandr26/tc-c#c-exceptions)
-* [How to install it?](https://github.com/alecksandr26/tc-c#how-to-install-it-)
-* [Getting started](https://github.com/alecksandr26/tc-c#getting-started)
-* [References](https://github.com/alecksandr26/tc-c#references)
+* [Description](https://github.com/alecksandr26/trycatch-c#try-catch-c-tc-c)
+* [How to install it?](https://github.com/alecksandr26/trycatch-c#how-to-install-it-)
+    * [Using yay](https://github.com/alecksandr26/trycatch-c#using-yay)
+    * [Using make](https://github.com/alecksandr26/trycatch-c#using-make)
+* [Getting started](https://github.com/alecksandr26/trycatch-c#getting-started)
+* [References](https://github.com/alecksandr26/trycatch-c#references)
 
 # Try Catch C (tc-c)
 This module offers a straightforward macro interface that facilitates seamless exception handling in the C programming language, drawing inspiration from the paradigm employed in C++.
@@ -13,7 +15,7 @@ This module offers a straightforward macro interface that facilitates seamless e
 2. Run the command `yay -S trycatch-c` to search for and install the package from the [AUR (Arch User Repository)](https://aur.archlinux.org/packages/trycatc-c).
 
 ## Using `make`
-1. Download the source code for the `trycatch-c` package from [releases](https://github.com/alecksandr26/tc-c/releases/tag/v1.2.1)
+1. Download the source code for the `trycatch-c` package from [releases](https://github.com/alecksandr26/trycatch-c/archive/refs/tags/v1.2.0.tar.gz)
 2. Extract the contents of the downloaded archive to a directory of your choice.
 3. Open a terminal window and navigate to the directory where you extracted the source code.
 4. Run the command `make compile` to compile the dependencies.
