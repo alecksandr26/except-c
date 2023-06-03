@@ -5,7 +5,7 @@
 * [References](https://github.com/alecksandr26/c-exceptions#references)
 
 # Try-Catch-C(tc-c)
-This module provides a simple macro interface that allows for easy exception handling in C, similar to Python's approach.
+This module offers a straightforward macro interface that facilitates seamless exception handling in the C programming language, drawing inspiration from the paradigm employed in C++.
 
 # How to install it ?
 ## Using `yay`
