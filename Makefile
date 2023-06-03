@@ -39,7 +39,8 @@ TEST_DIR = test
 LIB_DIR = lib
 BUILD_DIR = build
 UPLOAD_DIR = upload
-GCU = ssh://aur@aur.archlinux.org/tc-c.git # git clone
+PKGNAME = trycatch-c
+GCU = ssh://aur@aur.archlinux.org/$(PKGNAME).git # git clone
 
 # For installation
 M = makepkg
@@ -161,7 +162,7 @@ format: $(addprefix format_, 	$(wildcard $(SRC_DIR)/*.c) \
 				$(wildcard $(INCLUDE_DIR)/*.h) \
 				$(wildcard $(TEST_SRC_DIR)/*.c))
 
-install: compile
+install:
 	@echo Building: package
 	@$(M) $(M_FLAGS)
 	sudo pacman -U *.pkg.tar.zst

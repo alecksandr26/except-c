@@ -1,3 +1,11 @@
+# For building the package
+*.zst
+*.tar.gz
+build/*
+
+# For uploading to AUR
+upload/*
+
 vgcore.*
 
 # Prerequisites
