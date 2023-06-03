@@ -18,8 +18,7 @@ This module offers a straightforward macro interface that facilitates seamless e
 1. Download the source code for the `trycatch-c` package from [releases](https://github.com/alecksandr26/trycatch-c/archive/refs/tags/v1.2.0.tar.gz)
 2. Extract the contents of the downloaded archive to a directory of your choice.
 3. Open a terminal window and navigate to the directory where you extracted the source code.
-4. Run the command `make compile` to compile the dependencies.
-5. Run the command `make install` to install the package system-wide. You may be prompted to enter your ***administrator password***.
+4. Run the command `make install` to install the package system-wide. You may be prompted to enter your ***administrator password***.
 
 # Getting started
 1. Install the [trycatc-c](https://github.com/alecksandr26/tc-c#how-to-install-it-) library on your system.
