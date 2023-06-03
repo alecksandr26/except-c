@@ -7,20 +7,17 @@
   @license This project is released under the MIT License
 */
 
-#ifndef __STACKJMP_H__
-#define __STACKJMP_H__
+#ifndef STACKJMP_INCLUDED
+#define STACKJMP_INCLUDED
 
-/* The jump buffer */
 #define B JmpBuf
-typedef struct B {
-	/* Alloc memory to be able to catch the process stackjmp execution */
+
+typedef struct B B;
+struct B {
 	unsigned long buf[6];
-} B;
+};
 
-/* stackjmp: Initialize a stackjmp jump point for a future jumping. */
 extern int stackjmp(B *buf);
-
-/* jump: From a initialized buffer makes a jump and set rax register with the val */
 extern void jmpback(B *buf, int val);
 
 #undef B

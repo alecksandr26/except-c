@@ -7,7 +7,7 @@
   @license This project is released under the MIT License
 */
 
-#include "../include/except.h"
+#include "../include/tc.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -19,23 +19,18 @@
 F	   *except_head;
 const char *exception;
 
-/* To raise the exception aborting the program */
 void except_raise(const E *e, const char *file, int line)
 {
 	assert(e != NULL);
 
 	F *frame = except_head;
 
-	/* Check if there is a frame for exception handling */
-	if (frame == NULL) { /* Means that there isn't an exception frame handling */
+	if (frame == NULL) { 
 		fprintf(stderr, "Uncaught exception: ");
-
 		if (e->reason) fprintf(stderr, "%s:", e->reason);
 		else fprintf(stderr, "at 0x%p:", (void *) e);
-
 		if (file && line > 0) fprintf(stderr, " raised at %s:%i\n", file, line);
-
-		/* Aborts the program */
+		
 		fprintf(stderr, "Aborting....\n");
 		fflush(stderr);
 		abort();
@@ -45,11 +40,8 @@ void except_raise(const E *e, const char *file, int line)
 	frame->exception = e;
 	frame->file	 = file;
 	frame->line	 = line;
-
-	/* Pop from the stack */
 	except_head = except_head->prev;
-
-	/* Jump back to the stackjmp */
+	
 	jmpback(&frame->contex, EXCEPT_RAISED);
 }
 

@@ -1,5 +1,5 @@
 /* tests for the try and except modules */
-#include "../../include/except.h"
+#include "../../include/tc.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -14,11 +14,16 @@ void test_simple_try_except(void)
 {
 	int i = 0;
 
-	try throw_except(SomeError); /* throw_except some error */
-	except(SomeError3) i = 5;
-	except(SomeError) i++;
-	except(SomeError2) i = 3;
-	otherwise i	     = 2;
+	try
+		throw(SomeError); /* throw_except some error */
+	catch(SomeError3)
+		i = 5;
+	catch(SomeError)
+		i++;
+	catch(SomeError2)
+		i = 3;
+	otherwise
+		i	     = 2;
 	endtry;
 
 	assert(i == 1);
@@ -30,7 +35,8 @@ Except NotEnoughMemory		= {"Not enough memory"},
 /* always is going to return null */
 void *alloc_will_be_null(int num)
 {
-	if (num < 1) throw_except(AllocNumShouldBePositive);
+	if (num < 1)
+		throw(AllocNumShouldBePositive);
 	return NULL;
 }
 
@@ -40,7 +46,7 @@ void *create_instance_of_something(int n)
 	void *some_instance;
 
 	if ((some_instance = alloc_will_be_null(n)) == NULL)
-		throw_except(NotEnoughMemory); /* throw_except the error */
+		throw(NotEnoughMemory); /* throw_except the error */
 
 	return some_instance;
 }
@@ -49,9 +55,9 @@ void test_simulate_try_except(void)
 {
 	void *some_instace = NULL;
 
-	try some_instace = create_instance_of_something(10);
-	except(NotEnoughMemory)
-	{
+	try
+		some_instace = create_instance_of_something(10);
+	catch(NotEnoughMemory) {
 		assert(some_instace == NULL);
 		assert(except_flag == EXCEPT_HANDLED);
 	}
@@ -62,12 +68,16 @@ void test_multiples_trys(void)
 {
 	int i = 0;
 
-	try throw_except(SomeError);
-	except(SomeError) i++;
+	try
+		throw(SomeError);
+	catch(SomeError)
+		i++;
 	endtry;
 
-	try throw_except(SomeError2);
-	except(SomeError2) i++;
+	try
+		throw(SomeError2);
+	catch(SomeError2)
+		i++;
 	endtry;
 
 	assert(i == 2);
@@ -77,20 +87,21 @@ void more_try(void)
 {
 	void *instance = NULL;
 
-	try instance = create_instance_of_something(-1);
-	except(AllocNumShouldBePositive)
+	try
+		instance = create_instance_of_something(-1);
+	catch(AllocNumShouldBePositive)
 	{
 		assert(instance == NULL);
-		throw_except(AllocNumShouldBePositive); /* Raise again an error */
+		throw(AllocNumShouldBePositive); /* Raise again an error */
 	}
 	endtry;
 }
 
 void test_trys_inside_trys(void)
 {
-	try more_try();
-	except(AllocNumShouldBePositive)
-	{
+	try
+		more_try();
+	catch(AllocNumShouldBePositive) {
 		assert(exception == AllocNumShouldBePositive.reason);
 		printf("%s\n", exception);
 	}

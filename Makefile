@@ -37,30 +37,27 @@ SRC_DIR = src
 INCLUDE_DIR = include
 TEST_DIR = test
 LIB_DIR = lib
+BUILD_DIR = build
+UPLOAD_DIR = upload
+GCU = ssh://aur@aur.archlinux.org/tc-c.git # git clone
 
-INSTALL_LIB_DIR = /usr/lib
-INSTALL_INCLUDE_DIR = /usr/include
+# For installation
+M = makepkg
+M_FLAGS = -f --config .makepkg.conf
 
-# The source code of tests
 TEST_SRC_DIR = $(addprefix $(TEST_DIR)/, src)
 TEST_BIN_DIR = $(addprefix $(TEST_DIR)/, bin)
 
-# The dependencies
-OBJS = $(addprefix $(OBJ_DIR)/, except.o stackjmp.o)
+OBJS = $(addprefix $(OBJ_DIR)/, tc.o stackjmp.o)
 
-# The complete library
-LIB = $(addprefix $(LIB_DIR)/, libexcept.a)
+LIB = $(addprefix $(LIB_DIR)/, libtc.a)
 
-INTERFACES = $(addprefix $(INCLUDE_DIR)/, except.h stackjmp.h)
+INTERFACES = $(addprefix $(INCLUDE_DIR)/, tc.h tc/stackjmp.h)
 
-# The tests
-TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_stackjmp.out test_except.out)
-
+TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_stackjmp.out test_tc.out)
 
 # Compile everything
-.PHONY: all clean compile install format format_$(SRC_DIR)/%.c format_$(INCLUDE_DIR)/%.h \
-	format_$(TEST_SRC_DIR)/%.c
-
+.PHONY: all clean compile install format
 all: $(OBJ_DIR) $(LIB_DIR) $(TEST_BIN_DIR) $(OBJS) $(LIB) $(TESTS)
 
 $(OBJ_DIR):
@@ -77,16 +74,16 @@ $(TEST_BIN_DIR):
 	@mkdir -p $@
 
 # Compile all the dependencies
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INTERFACES)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo Compiling: $< -o $@
 	@$(C) $(C_FLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm $(INTERFACES)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm
 	@echo Compiling: $< -o $@
 	@$(N) $(N_FLAGS) $< -o $@
 
 # Archive the whole dependecies
-$(LIB): $(OBJS) $(INTERFACES)
+$(LIB): $(OBJS)
 	@echo Archiving: $(OBJS) -o $@
 	@$(AR) $@ $(OBJS)
 	@ranlib $@
@@ -102,7 +99,7 @@ test_%.out: $(TEST_BIN_DIR)/test_%.out
 	@echo Passed:
 
 # To Run all the tests
-tests: $(notdir $(TESTS))
+test: $(notdir $(TESTS))
 
 # To clean any compiled object
 clean_$(OBJ_DIR)/%.o:
@@ -147,17 +144,6 @@ compile: $(OBJ_DIR) $(LIB_DIR) $(TEST_BIN_DIR) \
 				$(wildcard $(TEST_BIN_DIR)/*.out)) \
 	$(LIB)
 
-# Install header files
-$(INSTALL_INCLUDE_DIR)/%.h: $(INCLUDE_DIR)/%.h
-	@echo Installing: $< -o $@
-	sudo install $< $@
-
-# Install the library
-install: compile $(addprefix $(INSTALL_INCLUDE_DIR)/, $(notdir $(INTERFACES)))
-	@echo Installing: $(LIB) -o $(INSTALL_LIB_DIR)/$(notdir $(LIB))
-	sudo install $(LIB) $(INSTALL_LIB_DIR)/$(notdir $(LIB))
-	@echo Installed:
-
 format_$(SRC_DIR)/%.c:
 	@echo Formatting: $(patsubst format_%, %, $@)
 	@$(CF) $(patsubst format_%, %, $@)
@@ -174,3 +160,20 @@ format_$(TEST_SRC_DIR)/%.c:
 format: $(addprefix format_, 	$(wildcard $(SRC_DIR)/*.c) \
 				$(wildcard $(INCLUDE_DIR)/*.h) \
 				$(wildcard $(TEST_SRC_DIR)/*.c))
+
+install: compile
+	@echo Building: package
+	@$(M) $(M_FLAGS)
+	sudo pacman -U *.pkg.tar.zst
+
+$(UPLOAD_DIR)/$(PKGNAME): $(UPLOAD_DIR)
+	@cd $< && git clone $(GCU)
+
+upload-aur: $(UPLOAD_DIR)/$(PKGNAME)
+	@cp PKGBUILD $</
+	@cd $</ && $(M) --printsrcinfo > .SRCINFO
+	@cd $</ && git add PKGBUILD .SRCINFO
+	@echo -n "Commit-msg: "
+	@read commitmsg
+	@cd $</ && git commit -m commitmsg
+	@cd $</ && git push

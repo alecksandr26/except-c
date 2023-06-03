@@ -7,48 +7,30 @@
   @license This project is released under the MIT License
 */
 
-#ifndef __EXCEPTION_H__
-#define __EXCEPTION_H__
+#ifndef TC_INCLUDED
+#define TC_INCLUDED
 
-/* Include the implementation of setjmp */
-#include "stackjmp.h"
+#include "tc/stackjmp.h"
 
 #define E Except
 #define F ExceptFrame
 
-/* Flags to track the status of the exceptions */
 enum { EXCEPT_ENTERED = 0, EXCEPT_RAISED, EXCEPT_HANDLED, EXCEPT_FINALIZED };
 
-/* The adt for exceptions */
-typedef struct E {
+typedef struct E E;
+struct E {
 	const char *reason;
-} E;
+};
 
-/* Adt which contains the info for the exception handling */
 typedef struct F F;
 struct F {
-	F *prev; /* For linking the frames */
-
+	F *prev;
 	JmpBuf contex;
-	/* Some info for debugin */
 	const char *file;
 	int	    line;
 	const E	   *exception;
 };
 
-/* The head of the linked exceptions */
-extern F *except_head;
-
-/* except_raise: It catches some exception and throw it */
-extern void except_raise(const E *e, const char *file, int line);
-
-#define throw_except(e) except_raise(&(e), __FILE__, __LINE__)
-
-/* To re-throw an exception that weren't be able to handled */
-#define RE_RAISE \
-	except_raise(except_frame.exception, except_frame.file, except_frame.line)
-
-/* Initialize an except_frame for handling an exception */
 #define try                                                               \
 	do {                                                              \
 		volatile int except_flag;                                 \
@@ -59,21 +41,21 @@ extern void except_raise(const E *e, const char *file, int line);
 		except_flag	  = stackjmp(&except_frame.contex);       \
 		/* Try something */                                       \
 		if (except_flag == EXCEPT_ENTERED)
-
-#define except(e) \
+#define throw(e) except_raise(&(e), __FILE__, __LINE__)
+#define RE_RAISE \
+	except_raise(except_frame.exception, except_frame.file, except_frame.line)
+#define catch(e)							\
 	else if (except_frame.exception == &(e) && (except_flag = EXCEPT_HANDLED))
-
-/* Just a simple else */
 #define otherwise else if ((except_flag = EXCEPT_HANDLED))
-
-/* Ends the initialized except frame  */
 #define endtry                                                              \
 	;                                                                   \
 	if (except_flag == EXCEPT_ENTERED) except_head = except_head->prev; \
 	if (except_flag == EXCEPT_RAISED) RE_RAISE;                         \
 	}                                                                   \
-	while (0)                                                           \
-		;
+	while (0)
+
+extern F *except_head;
+extern void except_raise(const E *e, const char *file, int line);
 
 #undef E
 #undef F
