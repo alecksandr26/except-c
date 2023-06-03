@@ -4,7 +4,7 @@
 * [Getting started](https://github.com/alecksandr26/tc-c#getting-started)
 * [References](https://github.com/alecksandr26/tc-c#references)
 
-# Try Catch C(tc-c)
+# Try Catch C (tc-c)
 This module offers a straightforward macro interface that facilitates seamless exception handling in the C programming language, drawing inspiration from the paradigm employed in C++.
 
 # How to install it ?
