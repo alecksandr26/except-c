@@ -12,7 +12,7 @@ This module offers a straightforward macro interface that facilitates seamless e
 # How to install it ?
 ## Using `yay`
 1. Open a terminal window and ensure that you have yay installed on your system.
-2. Run the command `yay -S trycatch-c` to search for and install the package from the [AUR (Arch User Repository)](https://aur.archlinux.org/packages/trycatc-c).
+2. Run the command `yay -S trycatch-c` to search for and install the package from the [AUR (Arch User Repository)](https://aur.archlinux.org/packages/trycatch-c).
 
 ## Using `make`
 1. Download the source code for the `trycatch-c` package from [releases](https://github.com/alecksandr26/trycatch-c/archive/refs/tags/v1.2.0.tar.gz)
