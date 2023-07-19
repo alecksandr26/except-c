@@ -1,5 +1,5 @@
 /* tests for the try and except modules */
-#include "../../include/tc.h"
+#include "../../include/trycatch.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -59,7 +59,7 @@ void test_simulate_try_except(void)
 		some_instace = create_instance_of_something(10);
 	catch(NotEnoughMemory) {
 		assert(some_instace == NULL);
-		assert(except_flag == EXCEPT_HANDLED);
+		assert(__except_flag == EXCEPT_HANDLED);
 	}
 	endtry;
 }

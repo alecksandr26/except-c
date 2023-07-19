@@ -7,23 +7,25 @@
   @license This project is released under the MIT License
 */
 
-#include "../include/tc.h"
+
 
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../include/trycatch.h"
+
 #define F ExceptFrame
 #define E Except
 
-F	   *except_head;
+F	   *__except_head;
 const char *exception;
 
-void except_raise(const E *e, const char *file, int line)
+void __tc_except_raise(const E *e, const char *file, int line)
 {
 	assert(e != NULL);
 
-	F *frame = except_head;
+	F *frame = __except_head;
 
 	if (frame == NULL) { 
 		fprintf(stderr, "Uncaught exception: ");
@@ -40,7 +42,7 @@ void except_raise(const E *e, const char *file, int line)
 	frame->exception = e;
 	frame->file	 = file;
 	frame->line	 = line;
-	except_head = except_head->prev;
+	__except_head = __except_head->prev;
 	
 	jmpback(&frame->contex, EXCEPT_RAISED);
 }

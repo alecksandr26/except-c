@@ -44,18 +44,18 @@ GCU = ssh://aur@aur.archlinux.org/$(PKGNAME).git # git clone
 
 # For installation
 M = makepkg
-M_FLAGS = -f --config .makepkg.conf
+M_FLAGS = -f --config .makepkg.conf --skipinteg --noextract
 
 TEST_SRC_DIR = $(addprefix $(TEST_DIR)/, src)
 TEST_BIN_DIR = $(addprefix $(TEST_DIR)/, bin)
 
-OBJS = $(addprefix $(OBJ_DIR)/, tc.o stackjmp.o)
+OBJS = $(addprefix $(OBJ_DIR)/, trycatch.o stackjmp.o)
 
 LIB = $(addprefix $(LIB_DIR)/, libtc.a)
 
-INTERFACES = $(addprefix $(INCLUDE_DIR)/, tc.h tc/stackjmp.h)
+INTERFACES = $(addprefix $(INCLUDE_DIR)/, trycatch.h trycatch/stackjmp.h)
 
-TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_stackjmp.out test_tc.out)
+TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_stackjmp.out test_trycatch.out)
 
 # Compile everything
 .PHONY: all clean compile install format
@@ -139,11 +139,7 @@ endif
 # Clean objects and libs and recompile with optimizations
 compile: C_FLAGS = $(C_COMPILE_FLAGS)
 compile: N_FLAGS = $(N_COMPILE_FLAGS)
-compile: $(OBJ_DIR) $(LIB_DIR) $(TEST_BIN_DIR) \
-	$(addprefix clean_, 	$(wildcard $(OBJ_DIR)/*.o) \
-				$(wildcard $(LIB_DIR)/*.a) \
-				$(wildcard $(TEST_BIN_DIR)/*.out)) \
-	$(LIB)
+compile: clean $(OBJ_DIR) $(OBJS) $(LIB_DIR) $(LIB)
 
 format_$(SRC_DIR)/%.c:
 	@echo Formatting: $(patsubst format_%, %, $@)
@@ -162,10 +158,8 @@ format: $(addprefix format_, 	$(wildcard $(SRC_DIR)/*.c) \
 				$(wildcard $(INCLUDE_DIR)/*.h) \
 				$(wildcard $(TEST_SRC_DIR)/*.c))
 
-install:
-	@echo Building: package
-	@$(M) $(M_FLAGS)
-	sudo pacman -U *.pkg.tar.zst
+pkg:
+	$(M) $(M_FLAGS)	
 
 $(UPLOAD_DIR)/$(PKGNAME): $(UPLOAD_DIR)
 	@cd $< && git clone $(GCU)

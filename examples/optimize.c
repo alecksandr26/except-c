@@ -3,7 +3,7 @@
  */
 #include <stdio.h>
 #include <assert.h>
-#include "../include/except.h"
+#include "../include/trycatch.h"
 
 Except SomeError = {"Some error"};
 
@@ -14,8 +14,8 @@ int main(void)
 	try {
 		i++;
 		printf("i = %i\n", i);
-		raise(SomeError);
-	} except(SomeError) {
+		throw(SomeError);
+	} catch(SomeError) {
 		i++;
 		printf("i = %i\n", i);
 	} endtry;

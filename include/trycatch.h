@@ -7,10 +7,10 @@
   @license This project is released under the MIT License
 */
 
-#ifndef TC_INCLUDED
-#define TC_INCLUDED
+#ifndef TRYCATCH_INCLUDED
+#define TRYCATCH_INCLUDED
 
-#include "tc/stackjmp.h"
+#include "trycatch/stackjmp.h"
 
 #define E Except
 #define F ExceptFrame
@@ -33,29 +33,29 @@ struct F {
 
 #define try                                                               \
 	do {                                                              \
-		volatile int except_flag;                                 \
-		ExceptFrame  except_frame; /* Creates the except_frame */ \
+		volatile int __except_flag;                                 \
+		ExceptFrame  __except_frame; /* Creates the except frame */ \
 		/* Link the frames */                                     \
-		except_frame.prev = except_head;                          \
-		except_head	  = &except_frame;                        \
-		except_flag	  = stackjmp(&except_frame.contex);       \
+		__except_frame.prev = __except_head;                          \
+		__except_head	  = &__except_frame;                        \
+		__except_flag	  = stackjmp(&__except_frame.contex);       \
 		/* Try something */                                       \
-		if (except_flag == EXCEPT_ENTERED)
-#define throw(e) except_raise(&(e), __FILE__, __LINE__)
+		if (__except_flag == EXCEPT_ENTERED)
+#define throw(e) __tc_except_raise(&(e), __FILE__, __LINE__)
 #define RE_RAISE \
-	except_raise(except_frame.exception, except_frame.file, except_frame.line)
+	__tc_except_raise(__except_frame.exception, __except_frame.file, __except_frame.line)
 #define catch(e)							\
-	else if (except_frame.exception == &(e) && (except_flag = EXCEPT_HANDLED))
-#define otherwise else if ((except_flag = EXCEPT_HANDLED))
+	else if (__except_frame.exception == &(e) && (__except_flag = EXCEPT_HANDLED))
+#define otherwise else if ((__except_flag = EXCEPT_HANDLED))
 #define endtry                                                              \
 	;                                                                   \
-	if (except_flag == EXCEPT_ENTERED) except_head = except_head->prev; \
-	if (except_flag == EXCEPT_RAISED) RE_RAISE;                         \
+	if (__except_flag == EXCEPT_ENTERED) __except_head = __except_head->prev; \
+	if (__except_flag == EXCEPT_RAISED) RE_RAISE;                         \
 	}                                                                   \
 	while (0)
 
-extern F *except_head;
-extern void except_raise(const E *e, const char *file, int line);
+extern F *__except_head;
+extern void __tc_except_raise(const E *e, const char *file, int line);
 
 #undef E
 #undef F
