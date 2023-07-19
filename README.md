@@ -6,7 +6,7 @@
 * [Getting started](https://github.com/alecksandr26/trycatch-c#getting-started)
 * [References](https://github.com/alecksandr26/trycatch-c#references)
 
-# Try Catch C (tc-c)
+# Try Catch C (trycatch-c)
 This module offers a straightforward macro interface that facilitates seamless exception handling in the C programming language, drawing inspiration from the paradigm employed in C++.
 
 # How to install it ?
@@ -22,9 +22,9 @@ This module offers a straightforward macro interface that facilitates seamless e
 
 # Getting started
 1. Install the [trycatc-c](https://github.com/alecksandr26/tc-c#how-to-install-it-) library on your system.
-2. Include the except.h header file in your C source code file using the following statement:
+2. Include the trycatch.h header file in your C source code file using the following statement:
 ```c
-#include <tc.h>
+#include <trycatch.h>
 ```
 3. Define your exception(s) using the `Except` type, as shown in the following example:
 ```c
@@ -42,7 +42,7 @@ try {
 ```
 his code snippet attempts to raise the someError exception using the raise macro. If the exception is raised, the except macro will catch it and execute the code block following it. In this case, the code block simply prints a message to the console.
 
-5. Compile your code with ***the -ltc flag*** to link against the ***tc-c library***. For example:
+5. Compile your code with ***the -ltc flag*** to link against the ***trycatch-c library***. For example:
 ```
 cc mycode.c -ltc
 ```
