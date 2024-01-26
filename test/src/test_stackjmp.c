@@ -1,5 +1,5 @@
 /* TO test the setjmp */
-#include "../../include/tc/stackjmp.h"
+#include "../../include/trycatch/stackjmp.h"
 
 #include <assert.h>
 #include <stdio.h>

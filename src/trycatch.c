@@ -7,13 +7,11 @@
   @license This project is released under the MIT License
 */
 
-
+#include "../include/trycatch.h"
 
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "../include/trycatch.h"
 
 #define F ExceptFrame
 #define E Except
@@ -27,12 +25,12 @@ void __tc_except_raise(const E *e, const char *file, int line)
 
 	F *frame = __except_head;
 
-	if (frame == NULL) { 
+	if (frame == NULL) {
 		fprintf(stderr, "Uncaught exception: ");
 		if (e->reason) fprintf(stderr, "%s:", e->reason);
 		else fprintf(stderr, "at 0x%p:", (void *) e);
 		if (file && line > 0) fprintf(stderr, " raised at %s:%i\n", file, line);
-		
+
 		fprintf(stderr, "Aborting....\n");
 		fflush(stderr);
 		abort();
@@ -42,8 +40,8 @@ void __tc_except_raise(const E *e, const char *file, int line)
 	frame->exception = e;
 	frame->file	 = file;
 	frame->line	 = line;
-	__except_head = __except_head->prev;
-	
+	__except_head	 = __except_head->prev;
+
 	jmpback(&frame->contex, EXCEPT_RAISED);
 }
 

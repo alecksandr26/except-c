@@ -18,8 +18,8 @@ define \n
 endef
 
 C = cc
-C_DEBUG_FLAGS = -ggdb -pedantic -Wall
-C_COMPILE_FLAGS = -O2 -DNDEBUG -fno-stack-protector -z execstack -no-pie
+C_DEBUG_FLAGS = -ggdb -pedantic -Wall -fPIC
+C_COMPILE_FLAGS = -O2 -DNDEBUG -fno-stack-protector -z execstack -no-pie -fPIC
 C_FLAGS = $(C_DEBUG_FLAGS)
 N = nasm
 N_DEBUG_FLAGS = -g -f elf64
@@ -69,6 +69,10 @@ $(LIB_DIR):
 	@echo Creating: $@
 	@mkdir -p $@
 
+$(UPLOAD_DIR):
+	@echo Creating: $@
+	@mkdir -p $@
+
 # Create the output binary
 $(TEST_BIN_DIR):
 	@echo Creating: $@
@@ -102,38 +106,19 @@ test_%.out: $(TEST_BIN_DIR)/test_%.out
 # To Run all the tests
 test: $(notdir $(TESTS))
 
-# To clean any compiled object
-clean_$(OBJ_DIR)/%.o:
-	@echo Removing: $(patsubst clean_%, %, $@)
-	@rm $(patsubst clean_%, %, $@)
-
-# To clean any archive library
-clean_$(LIB_DIR)/%.a:
-	@echo Removing: $(patsubst clean_%, %, $@)
-	@rm $(patsubst clean_%, %, $@)
-
-# To clean any compiled test
-clean_$(TEST_BIN_DIR)/%.out:
-	@echo Removing: $(patsubst clean_%, %, $@)
-	@rm $(patsubst clean_%, %, $@)
 
 # Remove all the compiled dependencies and tes
-clean: 	$(addprefix clean_, 	$(wildcard $(OBJ_DIR)/*.o) \
-				$(wildcard $(LIB_DIR)/*.a) \
-				$(wildcard $(TEST_BIN_DIR)/*.out))
+clean:
 ifneq ("$(wildcard $(OBJ_DIR))", "")
-	@echo Removing: $(OBJ_DIR)
-	@rmdir $(OBJ_DIR)
+	@rm -vr $(OBJ_DIR)
 endif
 
 ifneq ("$(wildcard $(TESTS_BIN_DIR))", "")
-	@echo Removing: $(TEST_BIN_DIR)
-	@rmdir $(TESTS_BIN_DIR)
+	@rm -vr $(TESTS_BIN_DIR)
 endif
 
 ifneq ("$(wildcard $(LIB_DIR))", "")
-	@echo Removing: $(LIB_DIR)
-	@rmdir $(LIB_DIR)
+	@rm -vr $(LIB_DIR)
 endif
 
 # Clean objects and libs and recompile with optimizations
