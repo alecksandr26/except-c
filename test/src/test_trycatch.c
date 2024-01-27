@@ -97,12 +97,21 @@ void test_trys_inside_trys(void)
 	endtry;
 }
 
+void test_throw_msg(void)
+{
+	try {
+		throw(ExceptLogicalError);
+	} endtry;
+}
+
 int main(void)
 {
 	test_simple_try_except();
 	test_simulate_try_except();
 	test_multiples_trys();
 	test_trys_inside_trys();
+
+	test_throw_msg();
 
 	return 0;
 }

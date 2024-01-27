@@ -1,5 +1,5 @@
 /*!
-  @file exception.h
+  @file trycatch.h
   @brief A simple-based macro interface that helps with dealing with exceptions.
 
   @author Erick Carrillo.
@@ -11,22 +11,19 @@
 #define TRYCATCH_INCLUDED
 
 #include "trycatch/stackjmp.h"
+#include "trycatch/except.h"
+#include "trycatch/exceptions.h"
 
 #define E Except
 #define F ExceptFrame
 
-enum { EXCEPT_ENTERED = 0, EXCEPT_RAISED, EXCEPT_HANDLED, EXCEPT_FINALIZED };
-
-typedef struct E E;
-struct E {
-	const char *reason;
-};
+#define __TRY_CATCH_C_FIRST(X, ...) X
 
 typedef struct F F;
 struct F {
 	F	   *prev;
 	JmpBuf	    contex;
-	const char *file;
+	const char *file, *func;
 	int	    line;
 	const E	   *exception;
 };
@@ -41,22 +38,29 @@ struct F {
 		__except_flag	    = stackjmp(&__except_frame.contex);     \
 		/* Try something */                                         \
 		if (__except_flag == EXCEPT_ENTERED)
-#define throw(e) __tc_except_raise(&(e), __FILE__, __LINE__)
-#define RE_RAISE                                                         \
-	__tc_except_raise(__except_frame.exception, __except_frame.file, \
-			  __except_frame.line)
-#define catch(e) \
+
+/* throw: Throws an expection, and catch the necessary information from where it was raised. */
+#define throw(e, ...) do {						\
+		e.msg = __TRY_CATCH_C_FIRST(__VA_ARGS__ __VA_OPT__(, ) NULL); \
+		__tc_except_raise(&(e), __FILE__, __LINE__, __func__);	\
+	} while (0)
+
+#define RE_RAISE							\
+	__tc_except_raise(__except_frame.exception, __except_frame.file, __except_frame.line, \
+			  __except_frame.func)
+#define catch(e)							\
 	else if (__except_frame.exception == &(e) && (__except_flag = EXCEPT_HANDLED))
 #define otherwise else if ((__except_flag = EXCEPT_HANDLED))
 #define endtry                                                                    \
-	;                                                                         \
 	if (__except_flag == EXCEPT_ENTERED) __except_head = __except_head->prev; \
-	if (__except_flag == EXCEPT_RAISED) RE_RAISE;                             \
-	}                                                                         \
+	if (__except_flag == EXCEPT_RAISED) RE_RAISE;			\
+	}								\
 	while (0)
 
 extern F   *__except_head;
-extern void __tc_except_raise(const E *e, const char *file, int line);
+
+/* __tc_except_raise: Raise an exception to be catched. */
+extern void __tc_except_raise(const E *e, const char *file, int line, const char *func);
 
 #undef E
 #undef F

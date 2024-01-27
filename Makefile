@@ -36,7 +36,9 @@ OBJ_DIR = obj
 SRC_DIR = src
 INCLUDE_DIR = include
 TEST_DIR = test
+EXAMPLE_DIR = examples
 LIB_DIR = lib
+
 BUILD_DIR = build
 UPLOAD_DIR = upload
 PKGNAME = trycatch-c
@@ -49,13 +51,13 @@ M_FLAGS = -f --config .makepkg.conf --skipinteg --noextract
 TEST_SRC_DIR = $(addprefix $(TEST_DIR)/, src)
 TEST_BIN_DIR = $(addprefix $(TEST_DIR)/, bin)
 
-OBJS = $(addprefix $(OBJ_DIR)/, trycatch.o stackjmp.o)
+OBJS = $(addprefix $(OBJ_DIR)/, trycatch.o stackjmp.o exceptions.o)
 
 LIB = $(addprefix $(LIB_DIR)/, libtc.a)
 
-INTERFACES = $(addprefix $(INCLUDE_DIR)/, trycatch.h trycatch/stackjmp.h)
-
 TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_stackjmp.out test_trycatch.out)
+
+EXAMPLES = $(addprefix $(EXAMPLE_DIR)/, example_general_purpuse.c)
 
 # Compile everything
 .PHONY: all clean compile install format
@@ -93,18 +95,29 @@ $(LIB): $(OBJS)
 	@$(AR) $@ $(OBJS)
 	@ranlib $@
 
-$(TEST_BIN_DIR)/test_%.out: $(TEST_SRC_DIR)/test_%.c $(LIB) $(INTERFACES)
-	@echo Compiling: $(word 1, $^) $(word 2, $^) -o $@
-	@$(C) $(C_FLAGS) $(word 1, $^) $(word 2, $^) -o $@
+$(TEST_BIN_DIR)/test_%.out: $(TEST_SRC_DIR)/test_%.c $(LIB)
+	@echo Compiling: $^ -o $@
+	@$(C) $(C_FLAGS) $^ -o $@
 
 # To run an specifyc test
 test_%.out: $(TEST_BIN_DIR)/test_%.out
-	@echo $@:
+	@echo $@
 	@$(V) $(V_FLAGS) ./$<
 	@echo Passed:
 
 # To Run all the tests
 test: $(notdir $(TESTS))
+
+$(EXAMPLE_DIR)/%.out: $(EXAMPLE_DIR)/%.c $(LIB)
+	@echo Compiling: $^ -o $@
+	@$(C) $(C_FLAGS) $^ -o $@
+
+example_%.out: $(EXAMPLE_DIR)/example_%.out
+	@echo $@
+	@$(V) $(V_FLAGS) ./$<
+
+
+example: $(notdir $(EXAMPLES))
 
 
 # Remove all the compiled dependencies and tes
