@@ -1,2 +1,3 @@
 ---- 2024/01/26 ----
 - Create like standard exceptions [X]
+- Add the macro `throw_if()` [X]
