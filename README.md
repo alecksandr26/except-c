@@ -27,13 +27,42 @@ This module offers a straightforward macro interface that facilitates seamless e
 ```c
 #include <trycatch.h>
 ```
-3. Define your exception(s) using the `Except` type, as shown in the following example:
+3. Define your exceptions using the `Except` type, as demonstrated in the following example:
 ```c
 Except someError = {"Some error"};
 ```
-In this example, `someError` is ***an exception*** of type `Except`, with the message "Some error".
+In this instance, `someError` represents an exception of the `Except` type, accompanied by the message "Some error."
+Alternatively, you can leverage the ***general-purpose exceptions*** already defined in the [trycatch/exceptions.h](https://github.com/alecksandr26/trycatch-c/blob/main/include/trycatch/exceptions.h) header file, 
+depending on your specific requirements.
+```c
+#define E Except
 
-4. Use the try, raise, and except macros to handle exceptions in your code. Here is an example code snippet:
+// User exceptions  
+extern E ExceptLogicalError;
+extern E ExceptInvalidArgument;
+extern E ExceptDomainError;
+extern E ExceptLengthError;
+extern E ExceptOutOfRange;
+
+// System error exceptions
+extern E ExceptRuntimeError;
+extern E ExceptRangeError;
+extern E ExceptOverflowError;
+extern E ExceptSystemError;
+extern E ExceptFileSystemError;
+extern E ExceptSocketSystemError;
+extern E ExceptReadSystemError;
+extern E ExceptWriteSystemError;
+
+// Memory exceptions
+extern E ExceptBadAlloc;
+extern E ExceptBadArrayNewLength;
+extern E ExceptBadPtr;
+
+#undef E
+```
+
+4. Use the try, throw, and except macros to handle exceptions in your code. Here is an example code snippet:
 ```c
 try {
     throw(someError); // <--- throw the exception of someError
@@ -41,13 +70,28 @@ try {
     puts("Exception caught!");
 } endtry;
 ```
-his code snippet attempts to raise the someError exception using the raise macro. If the exception is raised, the except macro will catch it and execute the code block following it. In this case, the code block simply prints a message to the console.
+This code snippet attempts to raise the someError exception using the throw macro. If the exception is raised, the except macro will catch it and execute the code block following it. 
+In this case, the code block simply prints a message to the console.
+Additionally, you have the option to include a ***message*** when raising an exception to provide supplementary information about the error:
+```c
+try {
+    throw(someError, "This is a message"); // <--- Adding an message
+} catch(someError) {
+    puts("Exception caught!");
+} endtry;
+```
+This modification allows you to add a descriptive message when throwing the `someError` exception, enhancing the contextual 
+information available during exception handling and debugging.
 
 5. Compile your code with ***the -ltc flag*** to link against the ***trycatch-c library***. For example:
 ```
 cc mycode.c -ltc
 ```
 ## Video example
+
+
+https://github.com/alecksandr26/trycatch-c/assets/66882463/ee33dac7-a704-4754-bc77-ba561a93a301
+
 
 
 
