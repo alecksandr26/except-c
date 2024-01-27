@@ -4,6 +4,7 @@
     * [Using yay](https://github.com/alecksandr26/trycatch-c#using-yay)
     * [Using make](https://github.com/alecksandr26/trycatch-c#using-make)
 * [Getting started](https://github.com/alecksandr26/trycatch-c#getting-started)
+* [Video example](https://github.com/alecksandr26/trycatch-c?tab=readme-ov-file#video-example)
 * [References](https://github.com/alecksandr26/trycatch-c#references)
 
 # Try Catch C (trycatch-c)
