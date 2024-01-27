@@ -101,7 +101,8 @@ void test_throw_msg(void)
 {
 	try {
 		throw(ExceptLogicalError);
-	} endtry;
+	}
+	endtry;
 }
 
 int main(void)

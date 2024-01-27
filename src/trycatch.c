@@ -7,10 +7,11 @@
   @license This project is released under the MIT License
 */
 
-#include "trycatch/stackjmp.h"
+#include "../include/trycatch.h"
+
 #include "../include/trycatch/except.h"
 #include "../include/trycatch/exceptions.h"
-#include "../include/trycatch.h"
+#include "trycatch/stackjmp.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -22,27 +23,26 @@
 F	   *__except_head;
 const char *exception;
 
-
 void __tc_except_raise(const E *e, const char *file, int line, const char *func)
 {
-	assert(e != NULL && file != NULL && line > 0 && func != NULL
-	       && "Can't receive null pointers");
+	assert(e != NULL && file != NULL && line > 0 && func != NULL &&
+	       "Can't receive null pointers");
 
 	F *frame = __except_head;
 
 	if (frame == NULL) {
 		fprintf(stderr, "Traceback...\n");
-		fprintf(stderr, "\tFile \"%s\", line %i, raised in func \"%s\"\n", file, line, func);
+		fprintf(stderr, "\tFile \"%s\", line %i, raised in func \"%s\"\n", file,
+			line, func);
 		fprintf(stderr, "UncaughtException:");
-		
+
 		if (e->reason)
 			fprintf(stderr, "\t \"%s\"%s", e->reason, (e->msg) ? "," : "\n");
-		if (e->msg)
-			fprintf(stderr, "\t \"%s\"\n", e->msg);
+		if (e->msg) fprintf(stderr, "\t \"%s\"\n", e->msg);
 
 		fprintf(stderr, "\nAborting....\n");
 		fflush(stderr);
-		
+
 #ifndef NDEBUG
 		abort();
 #else
@@ -50,7 +50,7 @@ void __tc_except_raise(const E *e, const char *file, int line, const char *func)
 		exit(EXIT_SUCCESS);
 #endif
 	}
-	
+
 	exception	 = e->reason;
 	frame->exception = e;
 	frame->file	 = file;
