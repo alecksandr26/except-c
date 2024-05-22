@@ -3,7 +3,6 @@
    cc installed.c -ltc
 */
 
-
 #include <stdio.h>
 #include <trycatch.h>
 
@@ -13,7 +12,8 @@ Except someError = {"Some error"},
 int main(void)
 {
 	try {
-		throw(ExceptBadPtr, "Throwing a bad pointer");
+		throw(ExceptBadPtr,
+		      "This is a message hello world");
 	} catch(someError) {
 		puts("Hello, World!");
 	} catch(ExceptBadPtr) {
