@@ -91,9 +91,9 @@ TRY {
 This modification allows you to add a descriptive message when throwing the `someError` exception, enhancing the contextual 
 information available during exception handling and debugging.
 
-5. Compile your code with ***the -lexcept flag*** to link against the ***except-c library***. For example:
+5. Compile your code with ***the -lexcept flag*** to link against the ***except-c library*** and with ***-ggdb*** to have the backtrace from your exceptions. For example:
 ```
-cc mycode.c -lexcept
+cc -ggdb mycode.c -lexcept
 ```
 
 ## Video example
