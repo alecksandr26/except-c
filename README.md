@@ -5,6 +5,8 @@
     * [Using make](https://github.com/alecksandr26/except-c?tab=readme-ov-file#using-make)
 * [Getting started](https://github.com/alecksandr26/except-c?tab=readme-ov-file#getting-started)
     * [Video example](https://github.com/alecksandr26/except-c?tab=readme-ov-file#video-example)
+* [The new `assert`](https://github.com/alecksandr26/except-c?tab=readme-ov-file#the-new-assert)
+    * [Output of the `assert`](https://github.com/alecksandr26/except-c?tab=readme-ov-file#output-of-the-assert)
 * [References](https://github.com/alecksandr26/except-c?tab=readme-ov-file#references)
 
 # Except C (except-c)
