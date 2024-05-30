@@ -1,11 +1,11 @@
 # Table of Contents
-* [Description](https://github.com/alecksandr26/trycatch-c#try-catch-c-tc-c)
-* [How to install it?](https://github.com/alecksandr26/trycatch-c#how-to-install-it-)
-    * [Using yay](https://github.com/alecksandr26/trycatch-c#using-yay)
-    * [Using make](https://github.com/alecksandr26/trycatch-c#using-make)
-* [Getting started](https://github.com/alecksandr26/trycatch-c#getting-started)
-* [Video example](https://github.com/alecksandr26/trycatch-c?tab=readme-ov-file#video-example)
-* [References](https://github.com/alecksandr26/trycatch-c#references)
+* [Description](https://github.com/alecksandr26/except-c?tab=readme-ov-file#except-c-except-c)
+* [How to install it?](https://github.com/alecksandr26/except-c?tab=readme-ov-file#how-to-install-it-)
+    * [Using yay](https://github.com/alecksandr26/except-c?tab=readme-ov-file#using-yay)
+    * [Using make](https://github.com/alecksandr26/except-c?tab=readme-ov-file#using-make)
+* [Getting started](https://github.com/alecksandr26/except-c?tab=readme-ov-file#getting-started)
+* [Video example](https://github.com/alecksandr26/except-c?tab=readme-ov-file#video-example)
+* [References](https://github.com/alecksandr26/except-c?tab=readme-ov-file#references)
 
 # Except C (except-c)
 This module offers a straightforward macro interface that facilitates seamless exception handling in the C programming language, drawing inspiration from the paradigm employed in Python.
