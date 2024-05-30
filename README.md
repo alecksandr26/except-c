@@ -117,7 +117,7 @@ assert(0, "This is a message");   // condition, message
 ```
 3. Compile your code with ***the -lexcept flag*** to link against the ***except-c library***. For example:
 ```
-cc mycode.c -lexcept
+cc -ggdb mycode.c -lexcept
 ```
 
 ## Output of the `assert`
