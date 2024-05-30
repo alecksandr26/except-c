@@ -123,7 +123,7 @@ cc -ggdb mycode.c -lexcept
 ## Output of the `assert`
 This is an example output of an uncaught exception from a failed assertion.
 ```
-[arch]$ cc -ggdb assert.c -lexcept
+[arch]$ cc -ggdb mycode.c -lexcept
 [arch]$ ./a.out 
 Traceback...
         File "assert.c", line 9, raised in bar()
