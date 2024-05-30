@@ -10,17 +10,17 @@
 # then please put 'unknown'.
 
 # Maintainer: alecksandr <sansepiol26@gmail.com>
-pkgname=trycatch-c
-pkgver=1.4.0
-pkgrel=4
+pkgname=except-c
+pkgver=2.0.0
+pkgrel=5
 epoch=
 pkgdesc="This module offers a straightforward macro interface that facilitates seamless exception handling in
- the C programming language, drawing inspiration from the paradigm employed in C++."
+ the C programming language, drawing inspiration from the paradigm employed in Python."
 arch=(x86_64)
 url="https://github.com/alecksandr26/trycatch-c/archive/refs/tags/v1.2.0.tar.gz"
 license=('MIT License')
 depends=()
-makedepends=(gcc git make binutils coreutils nasm)
+makedepends=(gcc git make binutils coreutils)
 optdepends=(valgrind)
 source=("$pkgname-$pkgver.tar.gz::$url")
 md5sums=('SKIP')

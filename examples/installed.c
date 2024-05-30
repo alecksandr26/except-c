@@ -1,25 +1,24 @@
 /* Simple example with the lib installed, to compile,
-   to install just run `make install`
-   cc installed.c -ltc
+   to install just run `make pkg` and then 'pacman -U pkg'
+   cc installed.c -lexcept
 */
 
 #include <stdio.h>
-#include <trycatch.h>
+#include <except.h>
 
-Except someError = {"Some error"},
-	anotherError = {"Another error"};
+Except_T someError = INIT_EXCEPT_T("Some error"),
+	anotherError = INIT_EXCEPT_T("Another error");
 
 int main(void)
 {
-	try {
-		throw(ExceptBadPtr,
-		      "This is a message hello world");
-	} catch(someError) {
+	TRY {
+		RAISE(ExceptBadPtr, "This is a message hello world");
+	} EXCEPT(someError) {
 		puts("Hello, World!");
-	} catch(ExceptBadPtr) {
+	} EXCEPT(ExceptBadPtr) {
 		puts("Bad pointer");
-		printf("%s\n", ExceptBadPtr.msg);
-	} endtry;
+		printf("Msg: %s\n", Except_raise_info.msg);
+	} END_TRY;
 	
 	return 0;
 }

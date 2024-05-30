@@ -18,7 +18,7 @@ define \n
 endef
 
 C = cc
-C_DEBUG_FLAGS = -ggdb -pedantic -Wall -fPIC
+C_DEBUG_FLAGS = -Wall -Wextra -pedantic -ggdb
 C_COMPILE_FLAGS = -O2 -DNDEBUG -fno-stack-protector -z execstack -no-pie -fPIC
 C_FLAGS = $(C_DEBUG_FLAGS)
 N = nasm
@@ -30,7 +30,7 @@ AR = ar rc
 CF = clang-format -i
 
 V = valgrind
-V_FLAGS = --leak-check=full --track-origins=yes -s  --show-leak-kinds=all
+V_FLAGS = --leak-check=full --track-origins=yes -s  --show-leak-kinds=all --max-stackframe=8016174317795404487
 
 OBJ_DIR = obj
 SRC_DIR = src
@@ -41,7 +41,7 @@ LIB_DIR = lib
 
 BUILD_DIR = build
 UPLOAD_DIR = upload
-PKGNAME = trycatch-c
+PKGNAME = except-c
 GCU = ssh://aur@aur.archlinux.org/$(PKGNAME).git # git clone
 
 # For installation
@@ -51,11 +51,12 @@ M_FLAGS = -f --config .makepkg.conf --skipinteg --noextract
 TEST_SRC_DIR = $(addprefix $(TEST_DIR)/, src)
 TEST_BIN_DIR = $(addprefix $(TEST_DIR)/, bin)
 
-OBJS = $(addprefix $(OBJ_DIR)/, trycatch.o stackjmp.o exceptions.o)
+OBJS = $(addprefix $(OBJ_DIR)/, except.o assert.o)
 
-LIB = $(addprefix $(LIB_DIR)/, libtc.a)
+LIB = $(addprefix $(LIB_DIR)/, libexcept.a)
 
-TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_stackjmp.out test_trycatch.out)
+TESTS = $(addprefix $(TEST_BIN_DIR)/, 	test_except.out test_simple.out test_finally.out test_else.out \
+					test_assert.out)
 
 EXAMPLES = $(addprefix $(EXAMPLE_DIR)/, example_general_purpuse.c)
 
@@ -81,28 +82,28 @@ $(TEST_BIN_DIR):
 	@mkdir -p $@
 
 # Compile all the dependencies
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@echo Compiling: $< -o $@
 	@$(C) $(C_FLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.asm | $(OBJ_DIR)
 	@echo Compiling: $< -o $@
 	@$(N) $(N_FLAGS) $< -o $@
 
 # Archive the whole dependecies
-$(LIB): $(OBJS)
+$(LIB): $(OBJS) | $(LIB_DIR)
 	@echo Archiving: $(OBJS) -o $@
 	@$(AR) $@ $(OBJS)
 	@ranlib $@
 
-$(TEST_BIN_DIR)/test_%.out: $(TEST_SRC_DIR)/test_%.c $(LIB)
+$(TEST_BIN_DIR)/test_%.out: $(TEST_SRC_DIR)/test_%.c $(LIB) | $(TESTS_BIN_DIR)
 	@echo Compiling: $^ -o $@
 	@$(C) $(C_FLAGS) $^ -o $@
 
 # To run an specifyc test
 test_%.out: $(TEST_BIN_DIR)/test_%.out
 	@echo $@
-	@$(V) $(V_FLAGS) ./$<
+	@ DEBUGINFOD_URLS="https://debuginfod.archlinux.org" $(V) $(V_FLAGS) ./$<
 	@echo Passed:
 
 # To Run all the tests

@@ -3,24 +3,24 @@
  */
 #include <stdio.h>
 #include <assert.h>
-#include "../include/trycatch.h"
+#include "../include/except.h"
 
-Except SomeError = {"Some error"};
+Except_T SomeError = INIT_EXCEPT_T("Some error");
 
 int main(void)
 {
 	int i = 0;
 	
-	try {
+	TRY {
 		i++;
 		printf("i = %i\n", i);
-		throw(SomeError);
-	} catch(SomeError) {
+		RAISE(SomeError);
+	} EXCEPT(SomeError) {
 		i++;
 		printf("i = %i\n", i);
-	} endtry;
+	} END_TRY;
 
 	assert(i == 1);
-
+	
 	return 0;
 }
