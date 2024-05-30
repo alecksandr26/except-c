@@ -16,24 +16,24 @@ This module offers a straightforward macro interface that facilitates seamless e
 2. Run the command `yay -S except-c` to search for and install the package from the [AUR (Arch User Repository)](https://aur.archlinux.org/packages/except-c).
 
 ## Using `make`
-1. Download the source code for the `except-c` package from [releases](https://github.com/alecksandr26/except-c/archive/refs/tags/v1.2.0.tar.gz)
+1. Download the source code for the `except-c` package from [releases](https://github.com/alecksandr26/except-c/archive/refs/tags/v2.0.0.tar.gz)
 2. Extract the contents of the downloaded archive to a directory of your choice.
 3. Open a terminal window and navigate to the directory where you extracted the source code.
-4. Run the command `make pkg` to build a `x86_64.pkg.tar.zst` package.
+4. Run the command `make pkg` to build a `x86_64.pkg.tar.zst` package, or you can run the command `make compile` to build the file`libexcept.a`.
 5. Then just install the pacakge.
 
 # Getting started
-1. Install the [except-c](https://github.com/alecksandr26/tc-c#how-to-install-it-) library on your system.
-2. Include the trycatch.h header file in your C source code file using the following statement:
+1. Install the [except-c](https://github.com/alecksandr26/except-c/tree/main?tab=readme-ov-file#how-to-install-it-) library on your system.
+2. Include the `except.h` header file in your C source code file using the following statement:
 ```c
 #include <except.h>
 ```
-3. Define your exceptions using the `Except` type, as demonstrated in the following example:
+3. Define your exceptions using the `Except_T` type, as demonstrated in the following example:
 ```c
 Except_T someError = INIT_EXCEPT_T("Some error");
 ```
 In this instance, `someError` represents an exception of the `Except_T` type, accompanied by the message "Some error."
-Alternatively, you can leverage the ***general-purpose exceptions*** already defined in the [except.h](https://github.com/alecksandr26/trycatch-c/blob/main/include/trycatch/exceptions.h) header file, 
+Alternatively, you can leverage the ***general-purpose exceptions*** already defined in the [except.h](https://github.com/alecksandr26/except-c/blob/main/include/except.h) header file, 
 depending on your specific requirements.
 ```c
 /* Logical exceptions */
