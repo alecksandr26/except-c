@@ -96,7 +96,10 @@ cc mycode.c -lexcept
 ## Video example
 
 
-https://github.com/alecksandr26/trycatch-c/assets/66882463/ee33dac7-a704-4754-bc77-ba561a93a301
+
+
+https://github.com/alecksandr26/except-c/assets/66882463/66f9207a-b74d-4a96-a049-01d59aee353c
+
 
 
 
