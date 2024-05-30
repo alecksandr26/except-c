@@ -4,7 +4,7 @@
     * [Using yay](https://github.com/alecksandr26/except-c?tab=readme-ov-file#using-yay)
     * [Using make](https://github.com/alecksandr26/except-c?tab=readme-ov-file#using-make)
 * [Getting started](https://github.com/alecksandr26/except-c?tab=readme-ov-file#getting-started)
-* [Video example](https://github.com/alecksandr26/except-c?tab=readme-ov-file#video-example)
+    * [Video example](https://github.com/alecksandr26/except-c?tab=readme-ov-file#video-example)
 * [References](https://github.com/alecksandr26/except-c?tab=readme-ov-file#references)
 
 # Except C (except-c)
@@ -93,6 +93,7 @@ information available during exception handling and debugging.
 ```
 cc mycode.c -lexcept
 ```
+
 ## Video example
 
 
@@ -102,6 +103,33 @@ https://github.com/alecksandr26/except-c/assets/66882463/66f9207a-b74d-4a96-a049
 
 
 
+# The new `assert`
+By including the `except/assert.h` header, you override the default `assert` functionality in C. With this new implementation, a `failed assertion` will be treated as an exception.
+1. Include the `except/assert.h` header file in your C source code file using the following statement:
+```c
+#include <except/assert.h>
+```
+2. You can then use the `assert()` keyword to evaluate a condition and add a custom message.
+```c
+assert(0, "This is a message");   // condition, message
+```
+3. Compile your code with ***the -lexcept flag*** to link against the ***except-c library***. For example:
+```
+cc mycode.c -lexcept
+```
+
+## Output of the `assert`
+This is an example output of an uncaught exception from a failed assertion.
+```
+[arch]$ cc assert.c -lexcept
+[arch]$ ./a.out 
+Traceback...
+        File "mycode.c", line 9, raised in main()
+UncaughtException:       "Assertion failed",     "This is a message"
+
+Aborting....
+Aborted (core dumped)
+```
 
 
 # References
