@@ -126,7 +126,9 @@ This is an example output of an uncaught exception from a failed assertion.
 [arch]$ cc -ggdb assert.c -lexcept
 [arch]$ ./a.out 
 Traceback...
-        File "mycode.c", line 9, raised in main()
+        File "assert.c", line 9, raised in bar()
+        File "/home/aleck/Documents/projects/except-c/examples/assert.c", line 15, called from foo()
+        File "/home/aleck/Documents/projects/except-c/examples/assert.c", line 23, called from main()
 UncaughtException:       "Assertion failed",     "This is a message"
 
 Aborting....
