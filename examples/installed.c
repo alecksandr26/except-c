@@ -9,13 +9,18 @@
 Except_T someError = INIT_EXCEPT_T("Some error"),
 	anotherError = INIT_EXCEPT_T("Another error");
 
+void foo(void)
+{
+	RAISE(ExceptBadPtr, "This is a message hello world");
+}
+
 int main(void)
 {
 	TRY {
-		RAISE(ExceptBadPtr, "This is a message hello world");
+		foo();
 	} EXCEPT(someError) {
 		puts("Hello, World!");
-	} EXCEPT(ExceptBadPtr) {
+	} EXCEPT(ExceptBadArrayNewLength) {
 		puts("Bad pointer");
 		printf("Msg: %s\n", Except_raise_info.msg);
 	} END_TRY;
