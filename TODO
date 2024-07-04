@@ -1,10 +1,9 @@
 ---- 2024/01/26 ----
 - Create like standard exceptions [X]
-- Add the macro `throw_if(EXPR, EXCEPTION, ...)` [ ]
 - Find a way to catch the whole backtrace from where was called it [X]
   link: https://www.gnu.org/software/libc/manual/html_node/Backtraces.html
 - Implement a way to detect if a handler exist when an exception is raise is called
   and jump to that halder if thats not the case checks `else` 
   otherwise abort the program [X]
-- It would be great to connect a debuguer with this tool [ ]
+- It would be great to connect a debuguer with this tool [X]
 
