@@ -77,7 +77,7 @@ extern void Except_uninit_signal_exceptions(void);
 extern void Except_link_handled(T *e);
 extern void Except_unlink_handlers(void);
 extern void Except_unlink_frame_stack(const Except_Frame *actual_frame);
-extern void Except_raise(T *e, const char *file, const char *func, int line, const char *msg);
+extern void Except_raise(T *e, int debuggable, const char *file, const char *func, int line, const char *msg);
 extern void Except_abort_already_handled(T *e, const char *file, const char *func, int line);
 
 #define MAX_BACKTRACE_NAME_SIZE 256
@@ -93,12 +93,23 @@ extern char **Except_backtrace_strings;
 
 #define INIT_EXCEPT_T(r) {.reason = r, .flag = Except_nhandled, .prev = 0}
 
+#ifdef NDEBUG
 #define RAISE(e, ...) do  {							\
 		Except_backtrace_size = backtrace(Except_backtrace_array, MAX_BACKTRACE_LINES);	\
 		Except_backtrace_strings = backtrace_symbols(Except_backtrace_array, Except_backtrace_size); \
-		Except_raise(&(e), __FILE__, __func__, __LINE__,	\
+		Except_raise(&(e), 0, __FILE__, __func__, __LINE__,	\
 			     __GET_FIRST(__VA_ARGS__ __VA_OPT__(,) 0));	\
 	} while (0)
+#else
+#define RAISE(e, ...) do  {							\
+		Except_backtrace_size = backtrace(Except_backtrace_array, MAX_BACKTRACE_LINES);	\
+		Except_backtrace_strings = backtrace_symbols(Except_backtrace_array, Except_backtrace_size); \
+		Except_raise(&(e), 1, __FILE__, __func__, __LINE__,	\
+			     __GET_FIRST(__VA_ARGS__ __VA_OPT__(,) 0));	\
+		/* Dump the process to the debugger */			\
+		__builtin_trap();					\
+	} while (0)
+#endif
 
 #define TRY do {							\
 	volatile int Except_flag;					\

@@ -12,6 +12,10 @@
 #include <signal.h>
 #include <execinfo.h>
 #include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <ctype.h>
+
 
 #include "../include/except.h"
 
@@ -248,7 +252,38 @@ static int Except_print_traceback(void)
 	return 0;
 }
 
-void Except_raise(T *e, const char *file, const char *func, int line, const char *msg)
+static int gdb_check(void)
+{
+	char buf[4096];
+
+	const int status_fd = open("/proc/self/status", O_RDONLY);
+	if (status_fd == -1)
+		return 0;
+
+	const ssize_t num_read = read(status_fd, buf, sizeof(buf) - 1);
+	close(status_fd);
+
+	if (num_read <= 0)
+		return 0;
+
+	buf[num_read] = '\0';
+	const char tracerPidString[] = "TracerPid:";
+	const char *tracer_pid_ptr= strstr(buf, tracerPidString);
+	if (!tracer_pid_ptr)
+		return 0;
+
+	for (const char* characterPtr = tracer_pid_ptr + sizeof(tracerPidString) - 1;
+	     characterPtr <= buf + num_read; ++characterPtr) {
+		if (isspace(*characterPtr))
+			continue;
+		else
+			return isdigit(*characterPtr) != 0 && *characterPtr != '0';
+	}
+	
+	return 0;
+}
+
+void Except_raise(T *e, int debuggable, const char *file, const char *func, int line, const char *msg)
 {
 	if (e == NULL)
 		ABORT("Passed exception null");
@@ -265,7 +300,7 @@ void Except_raise(T *e, const char *file, const char *func, int line, const char
 		if (Except_frame_stack != NULL && Except_frame_stack->else_status == Except_handled) {
 			free(Except_backtrace_strings);
 			longjmp(Except_frame_stack->else_env, Except_raised);
-		}			
+		}
 
 		
 		/* Before aborting the program execute all finally blocks from the except frames,
@@ -301,14 +336,19 @@ void Except_raise(T *e, const char *file, const char *func, int line, const char
 			fprintf(stderr, "\t \"%s\"%s", Except_raise_info.reason, (Except_raise_info.msg)
 				? "," : "\n");
 		if (Except_raise_info.msg) fprintf(stderr, "\t \"%s\"\n", Except_raise_info.msg);
-
-		fprintf(stderr, "\nAborting....\n");
-		fflush(stderr);
 		
 		free(Except_backtrace_strings);
 
+		/* Checks if gdb is active and this raise is debugable */
+		int using_gdb = gdb_check();
+		if (using_gdb && debuggable) fprintf(stderr, "\nDumping...\n");
+		else fprintf(stderr, "\nAborting...\n");
+		fflush(stderr);
+
 #ifdef NDEBUG
-		abort();
+		// Try to dump the process into the debugger
+		if (using_gdb && debuggable) return;
+		else abort();
 #else
 		fprintf(stdout, "Testing: cancel the abortion and exiting success\n");
 		exit(EXIT_SUCCESS);

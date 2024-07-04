@@ -5,19 +5,25 @@
 
 #include <stdio.h>
 #include <except.h>
+#include <string.h>
 
 Except_T someError = INIT_EXCEPT_T("Some error"),
 	anotherError = INIT_EXCEPT_T("Another error");
 
-void foo(void)
+void foo(char *name)
 {
-	RAISE(ExceptBadPtr, "This is a message hello world");
+	if (strcmp(name, "Erick") == 0)
+		RAISE(ExceptBadPtr, "This is a message hello world");
 }
 
 int main(void)
 {
+	char name[] = "Erick";
+	int age = 10;
+	printf("name: %s, age: %i\n", name, age);
+	
 	TRY {
-		foo();
+		foo(name);
 	} EXCEPT(someError) {
 		puts("Hello, World!");
 	} EXCEPT(ExceptBadArrayNewLength) {
