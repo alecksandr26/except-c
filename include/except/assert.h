@@ -21,7 +21,7 @@
 #else
 extern Except_T Assert_Failed;
 #define assert(e, ...) do {						\
-		if (!e)	{						\
+		if (!(e))	{					\
 			RAISE(Assert_Failed, __GET_FIRST(__VA_ARGS__ __VA_OPT__(,) 0));	\
 		}							\
 	} while (0)
