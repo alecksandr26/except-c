@@ -43,6 +43,8 @@ BUILD_DIR = build
 UPLOAD_DIR = upload
 PKGNAME = except-c
 GCU = ssh://aur@aur.archlinux.org/$(PKGNAME).git # git clone
+INSTALL_LIB_DIR = /usr/lib
+INSTALL_INCLUDE_DIR = /usr/include
 
 # For installation
 M = makepkg
@@ -157,8 +159,17 @@ format: $(addprefix format_, 	$(wildcard $(SRC_DIR)/*.c) \
 				$(wildcard $(INCLUDE_DIR)/*.h) \
 				$(wildcard $(TEST_SRC_DIR)/*.c))
 
+install: compile
+	sudo cp $(LIB) $(INSTALL_LIB_DIR)
+	sudo cp -r $(INCLUDE_DIR)/* $(INSTALL_INCLUDE_DIR)
+
+uinstall:
+	sudo rm -f $(INSTALL_LIB_DIR)/libexcept.a
+	sudo rm -rf $(INSTALL_INCLUDE_DIR)/except
+	sudo rm -f $(INSTALL_INCLUDE_DIR)/except.h
+
 pkg:
-	$(M) $(M_FLAGS)	
+	$(M) $(M_FLAGS)
 
 $(UPLOAD_DIR)/$(PKGNAME): $(UPLOAD_DIR)
 	@cd $< && git clone $(GCU)

@@ -22,7 +22,7 @@ This module offers a straightforward macro interface that facilitates seamless e
 2. Extract the contents of the downloaded archive to a directory of your choice.
 3. Open a terminal window and navigate to the directory where you extracted the source code.
 4. Run the command `make pkg` to build a `x86_64.pkg.tar.zst` package, or you can run the command `make compile` to build the file`libexcept.a`.
-5. Then just install the pacakge.
+5. Then just install the pacakge or lib.
 
 # Getting started
 1. Install the [except-c](https://github.com/alecksandr26/except-c/tree/main?tab=readme-ov-file#how-to-install-it-) library on your system.
